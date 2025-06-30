@@ -32,25 +32,25 @@ function SuggestionsContent() {
     const processData = async () => {
       try {
         setLoading(true);
-        
+
         // 最低限のローディング時間を確保
-        const minLoadingTime = new Promise(resolve => setTimeout(resolve, 1000));
-        
-        const errorParam = searchParams.get('error');
-        const dataParam = searchParams.get('data');
-        
+        const minLoadingTime = new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const errorParam = searchParams.get("error");
+        const dataParam = searchParams.get("data");
+
         if (errorParam) {
           await minLoadingTime;
           throw new Error(decodeURIComponent(errorParam));
         }
-        
+
         if (dataParam) {
           const parsedData = JSON.parse(decodeURIComponent(dataParam));
-          
+
           if (!parsedData.recommended_menu) {
             throw new Error("おすすめデータの構造が不正です");
           }
-          
+
           await minLoadingTime;
           setRecommendedData(parsedData);
         } else {
@@ -59,11 +59,7 @@ function SuggestionsContent() {
         }
       } catch (parseError) {
         console.error("Failed to process recommended data:", parseError);
-        setError(
-          parseError instanceof Error
-            ? parseError.message
-            : "データの処理に失敗しました"
-        );
+        setError(parseError instanceof Error ? parseError.message : "データの処理に失敗しました");
       } finally {
         setLoading(false);
       }
@@ -74,7 +70,7 @@ function SuggestionsContent() {
 
   const handleMapPress = () => {
     if (recommendedData?.recommended_menu?.shop?.google_map_url) {
-      window.open(recommendedData.recommended_menu.shop.google_map_url, '_blank');
+      window.open(recommendedData.recommended_menu.shop.google_map_url, "_blank");
     }
   };
 
@@ -83,12 +79,20 @@ function SuggestionsContent() {
 
     const { recommended_menu } = recommendedData;
     const menuUrl = `${window.location.origin}/menus/${recommended_menu.id}`;
-    
-    const shareText = `🍜 ラーメンに愛(AI)を！診断結果 🍜\n\nあなたにおすすめのラーメンは「${recommended_menu.name}」でした！\n\n📍 ${recommended_menu.shop?.name || "お店"}\n🥢 ${recommended_menu.genre_name} - ${recommended_menu.soup_name}スープ - ${recommended_menu.noodle_name}\n\n#ラーメンに愛を #ラーメン診断 #ラーメン\n\n`;
 
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(menuUrl)}`;
-    
-    window.open(twitterUrl, '_blank');
+    const shareText = `🍜 ラーメンに愛(AI)を！診断結果 🍜\n\nあなたにおすすめのラーメンは「${
+      recommended_menu.name
+    }」でした！\n\n📍 ${recommended_menu.shop?.name || "お店"}\n🥢 ${
+      recommended_menu.genre_name
+    } - ${recommended_menu.soup_name}スープ - ${
+      recommended_menu.noodle_name
+    }\n\n#ラーメンに愛を #ラーメン診断 #ラーメン\n\n`;
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      shareText
+    )}&url=${encodeURIComponent(menuUrl)}`;
+
+    window.open(twitterUrl, "_blank");
   };
 
   if (loading) {
@@ -138,18 +142,14 @@ function SuggestionsContent() {
       <div className="container mx-auto px-4 max-w-2xl">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* ヘッダー */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 text-center">
+          <div className="bg-orange-300 text-white p-6 text-center">
             <h1 className="text-2xl font-bold">あなたにおすすめのラーメン</h1>
           </div>
 
           {/* 画像 */}
           {image_url && (
             <div className="relative h-64 overflow-hidden">
-              <img
-                src={image_url}
-                alt={name}
-                className="w-full h-full object-cover"
-              />
+              <img src={image_url} alt={name} className="w-full h-full object-cover" />
             </div>
           )}
 
@@ -171,10 +171,7 @@ function SuggestionsContent() {
                 <h3 className="font-bold text-lg mb-2">{shop.name}</h3>
                 <p className="text-gray-600 mb-3">{shop.address}</p>
                 {shop.google_map_url && (
-                  <Button
-                    onClick={handleMapPress}
-                    className="w-full bg-blue-500 hover:bg-blue-600"
-                  >
+                  <Button onClick={handleMapPress} className="w-full bg-blue-500 hover:bg-blue-600">
                     地図で見る
                   </Button>
                 )}
@@ -191,10 +188,7 @@ function SuggestionsContent() {
 
             {/* アクションボタン */}
             <div className="space-y-3">
-              <Button
-                onClick={handleTwitterShare}
-                className="w-full bg-sky-500 hover:bg-sky-600"
-              >
+              <Button onClick={handleTwitterShare} className="w-full bg-sky-500 hover:bg-sky-600">
                 診断結果をXでシェア
               </Button>
 
@@ -211,14 +205,16 @@ function SuggestionsContent() {
 
 export default function Suggestions() {
   return (
-    <Suspense fallback={
-      <div className="flex flex-1 min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">読み込み中...</p>
+    <Suspense
+      fallback={
+        <div className="flex flex-1 min-h-screen items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">読み込み中...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <SuggestionsContent />
     </Suspense>
   );
