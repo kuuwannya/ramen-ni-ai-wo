@@ -50,8 +50,6 @@ const apiService = {
   },
   
   sendRecommendedMenus: async (
-    selectMenuIds: number[],
-    notSelectedMenuIds: number[] = []
   ) => {
     // ダミーレスポンス
     return {
@@ -91,7 +89,8 @@ export default function Preferences() {
       try {
         const response = await apiService.getRandomMenus();
         setMenus(response.menus || []);
-      } catch (err) {
+      } catch (error) {
+        console.error("メニューの取得に失敗しました:", error);
         setError("メニューの取得に失敗しました");
       } finally {
         setLoading(false);
