@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -22,12 +22,13 @@ type RecommendedData = {
   reason: string;
 };
 
-export default function Suggestions() {
+function SuggestionsContent() {
   const searchParams = useSearchParams();
   const [recommendedData, setRecommendedData] = useState<RecommendedData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // ...existing code...
   useEffect(() => {
     const processData = async () => {
       try {
@@ -91,6 +92,7 @@ export default function Suggestions() {
     window.open(twitterUrl, '_blank');
   };
 
+  // ...existing code for loading, error, and main content...
   if (loading) {
     return (
       <div className="flex flex-1 min-h-screen items-center justify-center">
@@ -207,5 +209,20 @@ export default function Suggestions() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Suggestions() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-1 min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <SuggestionsContent />
+    </Suspense>
   );
 }
