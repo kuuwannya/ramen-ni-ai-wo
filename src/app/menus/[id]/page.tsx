@@ -22,13 +22,12 @@ interface MenuDetail {
   };
 }
 
-interface MenuDetailPageProps {
-  params: {
-    id: string;
-  };
+interface PageProps {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export default function MenuDetailPage({ params }: MenuDetailPageProps) {
+export default function MenuDetailPage({ params }: PageProps) {
   const router = useRouter();
   const [menuData, setMenuData] = useState<MenuDetail | null>(null);
   const [loading, setLoading] = useState(true);
