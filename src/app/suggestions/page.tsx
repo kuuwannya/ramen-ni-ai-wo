@@ -143,7 +143,7 @@ function SuggestionsContent() {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* ヘッダー */}
           <div className="bg-orange-300 text-white p-6 text-center">
-            <h1 className="text-2xl font-bold">あなたにおすすめのラーメン</h1>
+            <h1 className="text-2xl font-bold">あなたにおすすめの一杯</h1>
           </div>
 
           {/* 画像 */}
