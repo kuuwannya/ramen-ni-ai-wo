@@ -22,6 +22,14 @@ const convertImageUrl = (imageUrl: string | null): string | null => {
   // 相対パスの場合
   return `${BASE_URL}${imageUrl}`;
 };
+type MenuType = {
+  id: number;
+  name: string;
+  genre_name: string;
+  noodle_name: string;
+  soup_name: string;
+  image_url: string;
+};
 
 export const secureApiClient = axios.create({
   baseURL: API_URL,
@@ -48,7 +56,7 @@ export const apiService = {
 
       // 画像URLを絶対URLに変換
       if (response.data.menus) {
-        response.data.menus = response.data.menus.map((menu: any) => ({
+        response.data.menus = response.data.menus.map((menu: MenuType) => ({
           ...menu,
           image_url: convertImageUrl(menu.image_url),
         }));
