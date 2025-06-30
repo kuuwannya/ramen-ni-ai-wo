@@ -148,7 +148,7 @@ function SuggestionsContent() {
 
           {/* 画像 */}
           {image_url && (
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-72 overflow-hidden">
               <img src={image_url} alt={name} className="w-full h-full object-cover" />
             </div>
           )}

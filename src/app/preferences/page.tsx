@@ -22,12 +22,12 @@ export default function Preferences() {
   const [menus, setMenus] = useState<MenuType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [likedMenuIds, setLikedMenuIds] = useState<number[]>([]);
   const [passedMenuIds, setPassedMenuIds] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
 
   // メニューデータ取得
   useEffect(() => {
@@ -61,17 +61,17 @@ export default function Preferences() {
   }, [menus]);
 
   const handleSwipe = useCallback(
-    async (direction: 'left' | 'right') => {
+    async (direction: "left" | "right") => {
       if (currentIndex >= transformedCardData.length || isSubmitting) return;
 
       const menuId = transformedCardData[currentIndex].id;
       const menuName = transformedCardData[currentIndex].name;
 
       setSwipeDirection(direction);
-      
+
       // アニメーション時間を考慮
       setTimeout(() => {
-        if (direction === 'right') {
+        if (direction === "right") {
           const newLikedMenuIds = [...likedMenuIds, menuId];
           setLikedMenuIds(newLikedMenuIds);
           console.log(`いいね: ${menuName} (ID: ${menuId})`);
@@ -81,45 +81,39 @@ export default function Preferences() {
           console.log(`パス: ${menuName} (ID: ${menuId})`);
         }
 
-        setCurrentIndex(prev => prev + 1);
+        setCurrentIndex((prev) => prev + 1);
         setSwipeDirection(null);
       }, 300);
     },
     [currentIndex, transformedCardData, likedMenuIds, passedMenuIds, isSubmitting]
   );
 
-  const handleAllCardsComplete = useCallback(
-    async () => {
-      console.log("全てのカードを見ました");
-      console.log("いいねしたメニューID:", likedMenuIds);
-      console.log("パスしたメニューID:", passedMenuIds);
+  const handleAllCardsComplete = useCallback(async () => {
+    console.log("全てのカードを見ました");
+    console.log("いいねしたメニューID:", likedMenuIds);
+    console.log("パスしたメニューID:", passedMenuIds);
 
-      if (likedMenuIds.length > 0) {
-        try {
-          setIsSubmitting(true);
-          
-          const response = await apiService.sendRecommendedMenus(
-            likedMenuIds,
-            passedMenuIds
-          );
+    if (likedMenuIds.length > 0) {
+      try {
+        setIsSubmitting(true);
 
-          if (response && response.recommended_menu) {
-            router.push(`/suggestions?data=${encodeURIComponent(JSON.stringify(response))}`);
-          } else {
-            router.push("/suggestions?error=" + encodeURIComponent("APIレスポンスの形式が不正です"));
-          }
-        } catch (error) {
-          console.error("API送信に失敗しました:", error);
-          router.push("/suggestions?error=" + encodeURIComponent("APIエラーが発生しました"));
-        } finally {
-          setIsSubmitting(false);
+        const response = await apiService.sendRecommendedMenus(likedMenuIds, passedMenuIds);
+
+        if (response && response.recommended_menu) {
+          router.push(`/suggestions?data=${encodeURIComponent(JSON.stringify(response))}`);
+        } else {
+          router.push("/suggestions?error=" + encodeURIComponent("APIレスポンスの形式が不正です"));
         }
-      } else {
-        router.push("/suggestions?error=" + encodeURIComponent("いいねしたメニューがありません"));
+      } catch (error) {
+        console.error("API送信に失敗しました:", error);
+        router.push("/suggestions?error=" + encodeURIComponent("APIエラーが発生しました"));
+      } finally {
+        setIsSubmitting(false);
       }
-    },
-    [router, likedMenuIds, passedMenuIds]
-  );
+    } else {
+      router.push("/suggestions?error=" + encodeURIComponent("いいねしたメニューがありません"));
+    }
+  }, [router, likedMenuIds, passedMenuIds]);
 
   // 全てのカードが完了したかチェック
   useEffect(() => {
@@ -182,40 +176,32 @@ export default function Preferences() {
         <div className="relative w-full max-w-sm">
           {/* 現在のカード */}
           {currentCard && (
-            <div 
+            <div
               className={`
-                relative w-full h-96 rounded-xl overflow-hidden bg-white shadow-lg transition-transform duration-300
-                ${swipeDirection === 'left' ? 'transform -translate-x-full rotate-12' : ''}
-                ${swipeDirection === 'right' ? 'transform translate-x-full -rotate-12' : ''}
+                relative w-full h-110 rounded-xl overflow-hidden bg-white shadow-lg transition-transform duration-300
+                ${swipeDirection === "left" ? "transform -translate-x-full rotate-12" : ""}
+                ${swipeDirection === "right" ? "transform translate-x-full -rotate-12" : ""}
               `}
             >
               <img
                 src={currentCard.image}
                 alt={currentCard.name}
-                className="w-full h-64 object-cover"
+                className="w-full h-72 object-cover"
               />
               <div className="p-4">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {currentCard.name}
-                </h3>
-                <p className="text-sm text-gray-600 mb-1">
-                  ジャンル: {currentCard.genre_name}
-                </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  麺: {currentCard.noodle_name}
-                </p>
-                <p className="text-sm text-gray-600">
-                  スープ: {currentCard.soup_name}
-                </p>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{currentCard.name}</h3>
+                <p className="text-sm text-gray-600 mb-1">ジャンル: {currentCard.genre_name}</p>
+                <p className="text-sm text-gray-600 mb-1">麺: {currentCard.noodle_name}</p>
+                <p className="text-sm text-gray-600">スープ: {currentCard.soup_name}</p>
               </div>
 
               {/* スワイプオーバーレイ */}
-              {swipeDirection === 'left' && (
+              {swipeDirection === "left" && (
                 <div className="absolute inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center rounded-xl">
                   <span className="text-4xl font-bold text-white">パス</span>
                 </div>
               )}
-              {swipeDirection === 'right' && (
+              {swipeDirection === "right" && (
                 <div className="absolute inset-0 bg-green-500 bg-opacity-50 flex items-center justify-center rounded-xl">
                   <span className="text-4xl font-bold text-white">いいね！</span>
                 </div>
@@ -242,9 +228,9 @@ export default function Preferences() {
           {/* パスボタン */}
           <button
             className={`w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center shadow-lg transition-all ${
-              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            onClick={() => handleSwipe('left')}
+            onClick={() => handleSwipe("left")}
             disabled={isSubmitting}
           >
             <span className="text-3xl text-white">✕</span>
@@ -258,9 +244,9 @@ export default function Preferences() {
           {/* いいねボタン */}
           <button
             className={`w-16 h-16 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center shadow-lg transition-all ${
-              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            onClick={() => handleSwipe('right')}
+            onClick={() => handleSwipe("right")}
             disabled={isSubmitting}
           >
             <span className="text-3xl text-white">♥</span>
