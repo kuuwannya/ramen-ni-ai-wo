@@ -28,7 +28,6 @@ function SuggestionsContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // ...existing code...
   useEffect(() => {
     const processData = async () => {
       try {
@@ -83,7 +82,7 @@ function SuggestionsContent() {
     if (!recommendedData?.recommended_menu) return;
 
     const { recommended_menu } = recommendedData;
-    const menuUrl = `${window.location.origin}/suggestions`;
+    const menuUrl = `${window.location.origin}/menus/${recommended_menu.id}`;
     
     const shareText = `🍜 ラーメンに愛(AI)を！診断結果 🍜\n\nあなたにおすすめのラーメンは「${recommended_menu.name}」でした！\n\n📍 ${recommended_menu.shop?.name || "お店"}\n🥢 ${recommended_menu.genre_name} - ${recommended_menu.soup_name}スープ - ${recommended_menu.noodle_name}\n\n#ラーメンに愛を #ラーメン診断 #ラーメン\n\n`;
 
@@ -92,7 +91,6 @@ function SuggestionsContent() {
     window.open(twitterUrl, '_blank');
   };
 
-  // ...existing code for loading, error, and main content...
   if (loading) {
     return (
       <div className="flex flex-1 min-h-screen items-center justify-center">
@@ -197,12 +195,11 @@ function SuggestionsContent() {
                 onClick={handleTwitterShare}
                 className="w-full bg-sky-500 hover:bg-sky-600"
               >
-                <span className="mr-2">🐦</span>
                 診断結果をXでシェア
               </Button>
 
               <Button asChild variant="outline" className="w-full">
-                <Link href="/">もう一度診断する</Link>
+                <Link href="/preferences">もう一度診断する</Link>
               </Button>
             </div>
           </div>
