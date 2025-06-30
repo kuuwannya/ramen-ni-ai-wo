@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -14,14 +14,6 @@ type MenuType = {
   image_url: string;
 };
 
-type CardDataType = {
-  id: number;
-  image: string;
-  name: string;
-  genre_name: string;
-  noodle_name: string;
-  soup_name: string;
-};
 
 // APIサービス（簡略化版）
 const apiService = {

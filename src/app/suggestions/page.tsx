@@ -23,7 +23,6 @@ type RecommendedData = {
 };
 
 export default function Suggestions() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [recommendedData, setRecommendedData] = useState<RecommendedData | null>(null);
   const [loading, setLoading] = useState(true);
