@@ -48,7 +48,7 @@ export default function MenuDetailPage({ params }: PageProps) {
     };
 
     fetchMenuDetail();
-  }, [params.id]);
+  }, [params]);
 
   const handleMapPress = () => {
     if (menuData?.shop?.google_map_url) {
