@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { apiService } from "@/lib/api-client";
 
 type MenuType = {
   id: number;
@@ -14,62 +15,7 @@ type MenuType = {
   image_url: string;
 };
 
-
-// APIサービス（簡略化版）
-const apiService = {
-  getRandomMenus: async (): Promise<{ menus: MenuType[] }> => {
-    // ダミーデータ
-    return {
-      menus: [
-        {
-          id: 1,
-          name: "醤油ラーメン",
-          genre_name: "ラーメン",
-          noodle_name: "中太麺",
-          soup_name: "醤油",
-          image_url: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop"
-        },
-        {
-          id: 2,
-          name: "味噌ラーメン",
-          genre_name: "ラーメン",
-          noodle_name: "太麺",
-          soup_name: "味噌",
-          image_url: "https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=400&h=300&fit=crop"
-        },
-        {
-          id: 3,
-          name: "塩ラーメン",
-          genre_name: "ラーメン",
-          noodle_name: "細麺",
-          soup_name: "塩",
-          image_url: "https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=400&h=300&fit=crop"
-        }
-      ]
-    };
-  },
-  
-  sendRecommendedMenus: async (
-  ) => {
-    // ダミーレスポンス
-    return {
-      recommended_menu: {
-        id: 1,
-        name: "おすすめ醤油ラーメン",
-        genre_name: "ラーメン",
-        noodle_name: "中太麺",
-        soup_name: "醤油",
-        image_url: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop",
-        shop: {
-          name: "ラーメン太郎",
-          address: "東京都渋谷区",
-          google_map_url: "https://maps.google.com"
-        }
-      },
-      reason: "あなたの好みに合わせて選ばれました。"
-    };
-  }
-};
+// ローカルのダミーAPIサービスを削除
 
 export default function Preferences() {
   const router = useRouter();
