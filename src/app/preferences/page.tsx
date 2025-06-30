@@ -173,7 +173,7 @@ export default function Preferences() {
       <div className="py-6 text-center">
         <h1 className="text-2xl font-bold text-gray-800">ラーメンスワイパー</h1>
         <p className="text-sm text-gray-600 mt-2">
-          {currentIndex + 1} / {transformedCardData.length}
+          {currentIndex} / {transformedCardData.length}
         </p>
       </div>
 
@@ -267,16 +267,6 @@ export default function Preferences() {
           </button>
         </div>
       </div>
-
-      {/* 提出中のローディング */}
-      {isSubmitting && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">おすすめを生成中...</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
