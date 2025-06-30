@@ -198,12 +198,12 @@ export default function Preferences() {
               {/* スワイプオーバーレイ */}
               {swipeDirection === "left" && (
                 <div className="absolute inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center rounded-xl">
-                  <span className="text-4xl font-bold text-white">パス</span>
+                  <span className="text-4xl font-bold text-white">NOPE</span>
                 </div>
               )}
               {swipeDirection === "right" && (
                 <div className="absolute inset-0 bg-green-500 bg-opacity-50 flex items-center justify-center rounded-xl">
-                  <span className="text-4xl font-bold text-white">いいね！</span>
+                  <span className="text-4xl font-bold text-white">LIKE</span>
                 </div>
               )}
             </div>
