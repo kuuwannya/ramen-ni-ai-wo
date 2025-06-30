@@ -113,7 +113,7 @@ function SuggestionsContent() {
           <p className="text-red-500 text-center mb-4">エラーが発生しました</p>
           <p className="text-gray-600 text-center mb-4">{error}</p>
           <p className="text-gray-500 text-center mb-6">再度お試しください。</p>
-          <Button asChild>
+          <Button asChild variant="outline">
             <Link href="/">ホームに戻る</Link>
           </Button>
         </div>
@@ -126,7 +126,7 @@ function SuggestionsContent() {
       <div className="flex flex-1 min-h-screen items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">表示できるラーメン情報がありません。</p>
-          <Button asChild>
+          <Button asChild variant="outline">
             <Link href="/">ホームに戻る</Link>
           </Button>
         </div>

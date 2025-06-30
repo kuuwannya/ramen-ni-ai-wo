@@ -138,7 +138,7 @@ export default function Preferences() {
       <div className="flex flex-1 min-h-screen items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error}</p>
-          <Button asChild>
+          <Button asChild variant="outline">
             <Link href="/">ホームに戻る</Link>
           </Button>
         </div>
@@ -151,7 +151,7 @@ export default function Preferences() {
       <div className="flex flex-1 min-h-screen items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">表示できるラーメン情報がありません。</p>
-          <Button asChild>
+          <Button asChild variant="outline">
             <Link href="/">ホームに戻る</Link>
           </Button>
         </div>
@@ -237,9 +237,9 @@ export default function Preferences() {
           </button>
 
           {/* ホームボタン */}
-          <Button asChild className="bg-blue-500 hover:bg-blue-600">
-            <Link href="/">ホーム</Link>
-          </Button>
+        <Button asChild variant="outline">
+            <Link href="/">ホームに戻る</Link>
+        </Button>
 
           {/* いいねボタン */}
           <button
