@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiService } from "@/lib/api-client";
+import Link from "next/link";
 
 interface MenuDetail {
   id: number;
@@ -140,11 +141,11 @@ export default function MenuDetailPage({ params }: MenuDetailPageProps) {
             </div>
 
             <Button
-              onClick={handleBack}
               variant="outline"
               className="w-full"
+              asChild
             >
-              ← 戻る
+              <Link href="/">ホーム</Link>
             </Button>
           </CardContent>
         </Card>
