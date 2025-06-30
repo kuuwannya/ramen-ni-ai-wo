@@ -37,7 +37,8 @@ export default function MenuDetailPage({ params }: PageProps) {
     const fetchMenuDetail = async () => {
       try {
         setLoading(true);
-        const data = await apiService.getMenuDetail(params.id);
+        const resolvedParams = await params;
+        const data = await apiService.getMenuDetail(resolvedParams.id);
         setMenuData(data);
       } catch (err) {
         console.error("Failed to fetch menu detail:", err);
