@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { apiService } from "@/lib/api-client";
+import Image from "next/image";
 
 type MenuType = {
   id: number;
@@ -183,10 +184,12 @@ export default function Preferences() {
                 ${swipeDirection === "right" ? "transform translate-x-full -rotate-12" : ""}
               `}
             >
-              <img
+              <Image
                 src={currentCard.image}
                 alt={currentCard.name}
-                className="w-full h-72 object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
               />
               <div className="p-4">
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{currentCard.name}</h3>
@@ -212,10 +215,12 @@ export default function Preferences() {
           {/* 次のカード（背景） */}
           {transformedCardData[currentIndex + 1] && (
             <div className="absolute inset-0 w-full h-96 rounded-xl overflow-hidden bg-white shadow-lg -z-10 transform scale-95 opacity-50">
-              <img
+              <Image
                 src={transformedCardData[currentIndex + 1].image}
                 alt={transformedCardData[currentIndex + 1].name}
-                className="w-full h-64 object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
               />
             </div>
           )}
