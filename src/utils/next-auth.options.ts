@@ -27,10 +27,7 @@ export const nextAuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, account, profile }) => {
-      // 注意: トークンをログ出力してはダメです。
-      console.log("in jwt", { user, token, account, profile });
-
+    jwt: async ({ token, user, account }) => {
       if (user) {
         token.user = user;
         // 拡張された型定義により、anyキャストなしでuser.roleにアクセス
@@ -42,9 +39,6 @@ export const nextAuthOptions: NextAuthOptions = {
       return token;
     },
     session: ({ session, token }) => {
-      console.log("in session", { session, token });
-      // 不要な式なので削除
-      // token.accessToken;
       return {
         ...session,
         user: {
