@@ -27,14 +27,36 @@ export const nextAuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, account }) => {
-      if (user) {
-        token.user = user;
-        // 拡張された型定義により、anyキャストなしでuser.roleにアクセス
-        token.role = user.role;
-      }
-      if (account) {
-        token.accessToken = account.access_token;
+    async jwt({ token, user, account }) {
+      // 初回サインイン時のみ、accountオブジェクトにGoogleのアクセストークンが含まれる
+      if (account && user) {
+        try {
+          // account.access_token がGoogleから取得したトークン
+          const googleAccessToken = account.access_token;
+
+          // お客様のバックエンドAPIを呼び出す
+          // process.env.NEXT_PUBLIC_API_URLを使用
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: googleAccessToken }), // バックエンドの仕様に合わせる
+          });
+
+          if (!response.ok) {
+            throw new Error('Backend authentication failed');
+          }
+
+          const backendData = await response.json();
+
+          // バックエンドから返された情報をnext-authのトークンに格納する
+          token.accessToken = backendData.token; // バックエンドが発行したJWT
+          token.user = backendData.user;         // バックエンドが返したユーザー情報
+
+        } catch (error) {
+          console.error("Error during backend authentication:", error);
+          // エラーが発生したことをトークンに記録
+          token.error = "BackendAuthenticationError";
+        }
       }
       return token;
     },
