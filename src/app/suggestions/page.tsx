@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 type RecommendedData = {
   recommended_menu: {
@@ -149,7 +150,13 @@ function SuggestionsContent() {
           {/* 画像 */}
           {image_url && (
             <div className="relative h-72 overflow-hidden">
-              <img src={image_url} alt={name} className="w-full h-full object-cover" />
+              <Image
+                src={image_url}
+                alt={name}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+              />
             </div>
           )}
 
