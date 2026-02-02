@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiService } from "@/lib/api-client";
 import Link from "next/link";
+import Image from "next/image";
 
 interface MenuDetail {
   id: number;
@@ -105,11 +106,13 @@ export default function MenuDetailPage({ params }: PageProps) {
           </CardHeader>
           <CardContent>
             {menuData.image_url ? (
-              <div className="mb-6">
-                <img
+              <div className="mb-6 relative w-full h-64">
+                <Image
                   src={menuData.image_url}
                   alt={menuData.name}
-                  className="w-full h-64 object-cover rounded-lg"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover rounded-lg"
                 />
               </div>
             ) : (
