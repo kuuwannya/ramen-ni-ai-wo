@@ -142,4 +142,14 @@ export const apiService = {
       throw error;
     }
   },
+
+  googleAuth: async (token: string) => {
+    try {
+      const response = await secureApiClient.post("/auth/google", { token });
+      return response.data;
+    } catch (error) {
+      console.error("Error during Google authentication:", error);
+      throw error;
+    }
+  },
 };
