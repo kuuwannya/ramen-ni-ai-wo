@@ -145,7 +145,14 @@ export const apiService = {
 
   googleAuth: async (token: string) => {
     try {
-      const response = await secureApiClient.post("/auth/google", { token });
+      const params = new URLSearchParams();
+      params.append("token", token);
+      
+      const response = await secureApiClient.post("/auth/google", params, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error during Google authentication:", error);

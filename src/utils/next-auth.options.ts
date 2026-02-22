@@ -3,18 +3,35 @@ import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 import { apiService } from "../lib/api-client";
 
-// next-authの型を拡張して、カスタムプロパティ (role) を含める
+// バックエンドから返ってくるユーザー情報の共通型
+interface BackendUser {
+  id?: number | string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string;
+}
+
+// next-authの型を拡張
 declare module "next-auth" {
-  interface User {
-    role?: string; // ユーザーオブジェクトにroleプロパティを追加
-  }
   interface Session {
-    user?: User; // セッションのユーザーオブジェクトが拡張されたUser型を使用するように
+    accessToken?: string;
+    user: BackendUser;
   }
-  interface JWT {
-    user?: User; // JWTのユーザーオブジェクトが拡張されたUser型を使用するように
+  interface User {
+    id?: number | string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
     role?: string;
-    accessToken?: string; // JWTにaccessTokenプロパティを追加
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string;
+    user?: BackendUser;
+    role?: string;
   }
 }
 
@@ -29,15 +46,20 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      // 初回サインイン時のみ、accountオブジェクトにGoogleのアクセストークンが含まれる
+      // 初回サインイン時のみ実行
       if (account && user) {
         try {
-          // account.access_token がGoogleから取得したトークン
-          const googleAccessToken = account.access_token;
+          // Googleからの認証には通常 id_token を使用します
+          // id_token がない場合は access_token を使用
+          const authPayload = account.id_token || account.access_token;
 
-          const backendData = await apiService.googleAuth(googleAccessToken as string);
+          if (!authPayload) {
+            throw new Error("No token available from Google");
+          }
 
-          // バックエンドから返された情報をnext-authのトークンに格納する
+          const backendData = await apiService.googleAuth(authPayload);
+
+          // バックエンドから返された情報をトークンに保存
           token.accessToken = backendData.token; // バックエンドが発行したJWT
           token.user = backendData.user;         // バックエンドが返したユーザー情報
 
@@ -49,14 +71,17 @@ export const nextAuthOptions: NextAuthOptions = {
       }
       return token;
     },
-    session: ({ session, token }) => {
-      return {
-        ...session,
-        user: {
+    async session({ session, token }) {
+      if (token.user) {
+        session.user = {
           ...session.user,
-          role: token.role,
-        },
-      };
+          ...token.user,
+        };
+      }
+      if (token.accessToken) {
+        session.accessToken = token.accessToken as string;
+      }
+      return session;
     },
   },
 };
