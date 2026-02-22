@@ -18,7 +18,7 @@ declare module "next-auth" {
     accessToken?: string;
     user: BackendUser;
   }
-  interface User extends BackendUser {}
+  type User = BackendUser;
 }
 
 declare module "next-auth/jwt" {
