@@ -3,28 +3,28 @@ import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 import { apiService } from "../lib/api-client";
 
+// バックエンドから返ってくるユーザー情報の共通型
+interface BackendUser {
+  id?: number | string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string;
+}
+
 // next-authの型を拡張
 declare module "next-auth" {
   interface Session {
     accessToken?: string;
-    user: {
-      id?: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-      role?: string;
-    };
+    user: BackendUser;
   }
-  interface User {
-    role?: string;
-    id?: string;
-  }
+  interface User extends BackendUser {}
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     accessToken?: string;
-    user?: any;
+    user?: BackendUser;
     role?: string;
   }
 }
