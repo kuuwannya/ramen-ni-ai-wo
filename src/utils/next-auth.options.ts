@@ -18,7 +18,13 @@ declare module "next-auth" {
     accessToken?: string;
     user: BackendUser;
   }
-  type User = BackendUser;
+  interface User {
+    id?: number | string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+  }
 }
 
 declare module "next-auth/jwt" {
