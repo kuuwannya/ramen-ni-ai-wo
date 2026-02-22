@@ -9,6 +9,15 @@ const convertImageUrl = (imageUrl: string | null): string | null => {
   return `${BASE_URL}${imageUrl}`;
 };
 
+type MenuType = {
+  id: number;
+  name: string;
+  genre_name: string;
+  noodle_name: string;
+  soup_name: string;
+  image_url: string;
+};
+
 export const secureApiClient = axios.create({
   baseURL: API_URL,
   timeout: 10000,
@@ -54,7 +63,7 @@ export const apiService = {
     try {
       const response = await secureApiClient.get("/random_menus");
       if (response.data.menus) {
-        response.data.menus = response.data.menus.map((menu: any) => ({
+        response.data.menus = response.data.menus.map((menu: MenuType) => ({
           ...menu,
           image_url: convertImageUrl(menu.image_url),
         }));
@@ -89,7 +98,7 @@ export const apiService = {
     const params = new URLSearchParams();
     params.append("code", code);
     params.append("redirect_uri", `${window.location.origin}/auth/callback`);
-    
+
     const response = await secureApiClient.post("/auth/google", params, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -103,7 +112,7 @@ export const apiService = {
       const response = await secureApiClient.get("/me");
       return response.data;
     } catch (error) {
-      return null;
+      throw error;
     }
   }
 };
