@@ -6,25 +6,20 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Header = () => {
-  const [user, setUser] = useState<{ name?: string; image?: string } | null>(null);
+  const [userImage, setUserImage] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    // クライアントサイドでのみ実行
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error("Failed to parse user from localStorage", e);
-      }
+    const storedImage = localStorage.getItem("userImage");
+    if (storedImage) {
+      setUserImage(storedImage);
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    setUser(null);
+    localStorage.removeItem("userImage");
+    setUserImage(null);
     router.push("/");
     router.refresh();
   };
@@ -51,19 +46,17 @@ const Header = () => {
         </Link>
       </div>
       <ul className="flex items-center space-x-4">
-        {user ? (
+        {userImage ? (
           <>
-            {user.image && (
-              <li>
-                <Image
-                  src={user.image}
-                  alt={user.name ?? "User"}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-              </li>
-            )}
+            <li>
+              <Image
+                src={userImage}
+                alt="User"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            </li>
             <li>
               <button
                 onClick={handleLogout}

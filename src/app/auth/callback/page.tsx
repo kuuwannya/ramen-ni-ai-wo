@@ -21,10 +21,9 @@ function AuthCallbackContent() {
           
           // トークンとユーザー情報を保存
           localStorage.setItem("accessToken", backendData.token);
-          localStorage.setItem("user", JSON.stringify(backendData.user));
+          localStorage.setItem("userImage", backendData.user.image);
           
-          router.push("/");
-          router.refresh();
+          window.location.href = "/";
         } catch (error) {
           console.error("Authentication failed:", error);
           router.push("/");
