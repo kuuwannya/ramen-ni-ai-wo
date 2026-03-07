@@ -23,8 +23,7 @@ function AuthCallbackContent() {
           localStorage.setItem("accessToken", backendData.token);
           localStorage.setItem("user", JSON.stringify(backendData.user));
           
-          router.push("/");
-          router.refresh();
+          window.location.href = "/";
         } catch (error) {
           console.error("Authentication failed:", error);
           router.push("/");
