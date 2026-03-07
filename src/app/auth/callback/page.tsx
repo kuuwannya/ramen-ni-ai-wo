@@ -27,13 +27,13 @@ function AuthCallbackContent() {
           router.refresh();
         } catch (error) {
           console.error("Authentication failed:", error);
-          router.push("/login?error=auth_failed");
+          router.push("/");
         }
       };
       
       authenticate();
     } else if (!code) {
-      router.push("/login");
+      router.push("/");
     }
   }, [router, searchParams]);
 
