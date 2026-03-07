@@ -50,7 +50,7 @@ secureApiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("user");
+        localStorage.removeItem("userImage");
       }
     }
     console.error("API Error:", error);
