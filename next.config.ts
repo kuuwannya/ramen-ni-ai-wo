@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         hostname: "ramen-ai-backend-service-943228427206.asia-northeast1.run.app",
         pathname: "/rails/active_storage/**",
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
     ],
   },
 };

@@ -114,5 +114,15 @@ export const apiService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  getShops: async () => {
+    try {
+      const response = await secureApiClient.get("/shops");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching shops:", error);
+      return { shops: [] };
+    }
+  },
 };

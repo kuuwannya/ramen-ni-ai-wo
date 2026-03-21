@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between bg-white p-4 shadow-md">
+    <header className="flex items-center justify-between bg-gray-50 p-4 shadow-md">
       <div className="flex items-center">
         <Link href="/" className="text-4xl font-bold">
           <Image
@@ -46,6 +46,14 @@ const Header = () => {
         </Link>
       </div>
       <ul className="flex items-center space-x-4">
+        <li>
+          <Link
+            href="/shops"
+            className="inline-block rounded-lg bg-orange-500 px-4 py-[7px] text-sm font-bold text-white hover:bg-orange-600"
+          >
+            店舗一覧
+          </Link>
+        </li>
         {userImage ? (
           <>
             <li>
@@ -60,7 +68,7 @@ const Header = () => {
             <li>
               <button
                 onClick={handleLogout}
-                className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
+                className="rounded-lg bg-orange-500 px-4 py-[7px] text-sm font-bold text-white hover:bg-orange-600"
               >
                 ログアウト
               </button>
@@ -70,7 +78,7 @@ const Header = () => {
           <li>
             <button
               onClick={handleLogin}
-              className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
+              className="rounded-lg bg-orange-500 px-4 py-[7px] text-sm font-bold text-white hover:bg-orange-600"
             >
               ログイン
             </button>
