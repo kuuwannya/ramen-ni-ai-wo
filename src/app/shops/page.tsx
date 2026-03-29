@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { apiService } from "@/lib/api-client";
@@ -20,6 +21,7 @@ type Pagination = {
 };
 
 export default function Shops() {
+  const router = useRouter();
   const [shops, setShops] = useState<Shop[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,13 +91,18 @@ export default function Shops() {
           <>
             <ul className="space-y-4">
               {shops.map((shop) => (
-                <li key={shop.id} className="bg-white rounded-xl shadow-sm p-5">
+                <li
+                  key={shop.id}
+                  onClick={() => router.push(`/shops/${shop.id}`)}
+                  className="bg-white rounded-xl shadow-sm p-5 cursor-pointer hover:shadow-md transition-shadow"
+                >
                   <h2 className="text-lg font-bold text-gray-800 mb-1">{shop.name}</h2>
-                  <p className="text-sm text-gray-600 mb-3">{shop.address}</p>
+                  <p className="text-sm text-gray-600 mb-3">📍 {shop.address}</p>
                   <a
                     href={shop.google_map_url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="text-sm text-blue-500 hover:underline"
                   >
                     Google マップで見る

@@ -134,4 +134,27 @@ export const apiService = {
       return { shops: [], pagination: null };
     }
   },
+
+  getShopDetail: async (id: string) => {
+    const response = await secureApiClient.get(`/shops/${id}`);
+    return response.data;
+  },
+
+  getShopMenus: async (id: string, page: number = 1) => {
+    const response = await secureApiClient.get(`/shops/${id}/menus`, { params: { page } });
+    const headers = response.headers;
+    const menus = (response.data.menus ?? []).map((menu: MenuType & { image_url: string }) => ({
+      ...menu,
+      image_url: convertImageUrl(menu.image_url),
+    }));
+    return {
+      menus,
+      pagination: {
+        current_page: parseInt(headers["current-page"] ?? "1", 10),
+        per_page: parseInt(headers["page-items"] ?? "20", 10),
+        total_pages: parseInt(headers["total-pages"] ?? "1", 10),
+        total_count: parseInt(headers["total-count"] ?? "0", 10),
+      },
+    };
+  },
 };
