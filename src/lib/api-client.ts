@@ -116,13 +116,22 @@ export const apiService = {
     }
   },
 
-  getShops: async () => {
+  getShops: async (page: number = 1) => {
     try {
-      const response = await secureApiClient.get("/shops");
-      return response.data;
+      const response = await secureApiClient.get("/shops", { params: { page } });
+      const headers = response.headers;
+      return {
+        shops: response.data.shops,
+        pagination: {
+          current_page: parseInt(headers["current-page"] ?? "1", 10),
+          per_page: parseInt(headers["page-items"] ?? "20", 10),
+          total_pages: parseInt(headers["total-pages"] ?? "1", 10),
+          total_count: parseInt(headers["total-count"] ?? "0", 10),
+        },
+      };
     } catch (error) {
       console.error("Error fetching shops:", error);
-      return { shops: [] };
+      return { shops: [], pagination: null };
     }
   },
 };
