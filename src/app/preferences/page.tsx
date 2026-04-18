@@ -66,7 +66,6 @@ export default function Preferences() {
       if (currentIndex >= transformedCardData.length || isSubmitting) return;
 
       const menuId = transformedCardData[currentIndex].id;
-      const menuName = transformedCardData[currentIndex].name;
 
       setSwipeDirection(direction);
 
