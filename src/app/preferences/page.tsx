@@ -66,20 +66,15 @@ export default function Preferences() {
       if (currentIndex >= transformedCardData.length || isSubmitting) return;
 
       const menuId = transformedCardData[currentIndex].id;
-      const menuName = transformedCardData[currentIndex].name;
 
       setSwipeDirection(direction);
 
       // アニメーション時間を考慮
       setTimeout(() => {
         if (direction === "right") {
-          const newLikedMenuIds = [...likedMenuIds, menuId];
-          setLikedMenuIds(newLikedMenuIds);
-          console.log(`いいね: ${menuName} (ID: ${menuId})`);
+          setLikedMenuIds([...likedMenuIds, menuId]);
         } else {
-          const newPassedMenuIds = [...passedMenuIds, menuId];
-          setPassedMenuIds(newPassedMenuIds);
-          console.log(`パス: ${menuName} (ID: ${menuId})`);
+          setPassedMenuIds([...passedMenuIds, menuId]);
         }
 
         setCurrentIndex((prev) => prev + 1);
@@ -90,10 +85,6 @@ export default function Preferences() {
   );
 
   const handleAllCardsComplete = useCallback(async () => {
-    console.log("全てのカードを見ました");
-    console.log("いいねしたメニューID:", likedMenuIds);
-    console.log("パスしたメニューID:", passedMenuIds);
-
     if (likedMenuIds.length > 0) {
       try {
         setIsSubmitting(true);
